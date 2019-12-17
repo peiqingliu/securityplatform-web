@@ -1,0 +1,41 @@
+{
+  "name": "securityplatform-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "avue-plugin-ueditor": "^0.0.5",
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "classlist-polyfill": "^1.2.0",
+    "element-ui": "^2.11.1",
+    "js-base64": "^2.5.1",
+    "js-cookie": "^2.2.0",
+    "mockjs": "^1.0.1-beta3",
+    "moment": "^2.24.0",
+    "nprogress": "^0.2.0",
+    "portfinder": "^1.0.23",
+    "script-loader": "^0.7.2",
+    "vue": "^2.5.16",
+    "vue-axios": "^2.1.2",
+    "vue-i18n": "^8.7.0",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.1.0",
+    "@vue/cli-service": "^4.1.0",
+    "sass": "^1.23.7",
+    "sass-loader": "^8.0.0",
+    "vue-template-compiler": "^2.6.10",
+    "chai": "^4.1.2",
+    "webpack-bundle-analyzer": "^3.0.3"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
