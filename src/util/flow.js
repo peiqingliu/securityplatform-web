@@ -13,7 +13,6 @@ export function flowCategory(category) {
  * @param key
  */
 export function flowRoute(routes, key) {
-  debugger;
   const data = routes.filter(d => {
     return d.routeKey === key;
   });

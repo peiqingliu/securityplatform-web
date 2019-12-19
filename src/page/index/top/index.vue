@@ -155,7 +155,6 @@ export default {
         cancelButtonText: this.$t("cancelText"),
         type: "warning"
       }).then(() => {
-        debugger;
         this.$store.dispatch("LogOut").then(() => {
           this.$router.push({ path: "/login" });
         });

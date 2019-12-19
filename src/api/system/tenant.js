@@ -10,7 +10,16 @@ export const getList = (current, size, params) => {
       size,
     }
   })
-}
+};
+
+export const getTenantAll = (row) => {
+  return request({
+    url: '/cetc/system/tenant/getAll',
+    method: 'get',
+    data: row
+  })
+};
+
 export const remove = (ids) => {
   return request({
     url: '/api/blade-system/tenant/remove',
@@ -19,7 +28,7 @@ export const remove = (ids) => {
       ids,
     }
   })
-}
+};
 
 export const add = (row) => {
   return request({
@@ -27,7 +36,7 @@ export const add = (row) => {
     method: 'post',
     data: row
   })
-}
+};
 
 export const update = (row) => {
   return request({
@@ -35,4 +44,4 @@ export const update = (row) => {
     method: 'post',
     data: row
   })
-}
+};

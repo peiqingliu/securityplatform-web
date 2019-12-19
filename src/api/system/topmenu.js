@@ -2,7 +2,7 @@ import request from '@/router/axios';
 
 export const getList = (current, size, params) => {
   return request({
-    url: '/api/blade-system/topmenu/list',
+    url: '/cetc/system/topMenu/getByCondition',
     method: 'get',
     params: {
       ...params,
@@ -14,7 +14,7 @@ export const getList = (current, size, params) => {
 
 export const getDetail = (id) => {
   return request({
-    url: '/api/blade-system/topmenu/detail',
+    url: '/cetc/system/topMenu/detail',
     method: 'get',
     params: {
       id
@@ -24,7 +24,7 @@ export const getDetail = (id) => {
 
 export const remove = (ids) => {
   return request({
-    url: '/api/blade-system/topmenu/remove',
+    url: '/cetc/system/topMenu/remove',
     method: 'post',
     params: {
       ids,
@@ -34,7 +34,7 @@ export const remove = (ids) => {
 
 export const add = (row) => {
   return request({
-    url: '/api/blade-system/topmenu/submit',
+    url: '/cetc/system/topMenu/save',
     method: 'post',
     data: row
   })
@@ -42,22 +42,22 @@ export const add = (row) => {
 
 export const update = (row) => {
   return request({
-    url: '/api/blade-system/topmenu/submit',
-    method: 'post',
+    url: '/cetc/system/topMenu/update',
+    method: 'put',
     data: row
   })
 };
 
 export const grantTree = () => {
   return request({
-    url: '/api/blade-system/menu/grant-top-tree',
+    url: '/cetc/system/permission/grant-top-tree',
     method: 'get',
   })
 };
 
 export const getTopTree = (topMenuIds) => {
   return request({
-    url: '/api/blade-system/menu/top-tree-keys',
+    url: '/cetc/system/permission/top-tree-keys',
     method: 'get',
     params: {
       topMenuIds,
@@ -67,7 +67,7 @@ export const getTopTree = (topMenuIds) => {
 
 export const grant = (topMenuIds, menuIds) => {
   return request({
-    url: '/api/blade-system/topmenu/grant',
+    url: '/cetc/system/topMenu/grant',
     method: 'post',
     params: {
       topMenuIds,

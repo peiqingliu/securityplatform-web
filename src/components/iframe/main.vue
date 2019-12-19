@@ -60,12 +60,12 @@ export default {
     // 加载组件
     load() {
       this.show();
-      var flag = true; //URL是否包含问号
+      let flag = true; //URL是否包含问号
       if (this.$route.query.src.indexOf("?") == -1) {
         flag = false;
       }
-      var list = [];
-      for (var key in this.$route.query) {
+      let list = [];
+      for (let key in this.$route.query) {
         if (key != "src" && key != "name" && key != "i18n") {
           list.push(`${key}= this.$route.query[key]`);
         }

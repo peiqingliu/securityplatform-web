@@ -1,8 +1,10 @@
-import Cookies from 'js-cookie'
-const TokenKey = 'x-access-token'
-const RefreshTokenKey = 'x-refresh-token'
+import Cookies from 'js-cookie';
+import {getStore} from "@/util/store";
+const TokenKey = 'x-access-token';
+const RefreshTokenKey = 'x-refresh-token';
 export function getToken() {
-    return Cookies.get(TokenKey)
+    // return Cookies.get(TokenKey)
+    return getStore({name: 'token'});
 }
 
 export function setToken(token) {

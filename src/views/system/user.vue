@@ -33,14 +33,6 @@
                    @click="handleReset">密码重置
         </el-button>
       </template>
-      <template slot-scope="{row}"
-                slot="roleId">
-        <el-tag>{{row.roleName}}</el-tag>
-      </template>
-      <template slot-scope="{row}"
-                slot="deptId">
-        <el-tag>{{row.deptName}}</el-tag>
-      </template>
     </avue-crud>
   </basic-container>
 </template>
@@ -100,32 +92,12 @@
           selection: true,
           viewBtn: true,
           dialogHeight: 450,
-          dialogType: 'drawer',
+          dialogType: 'dialog',
           column: [
             {
               label: "登录账号",
-              prop: "account",
+              prop: "username",
               search: true,
-            },
-            {
-              label: "所属租户",
-              prop: "tenantId",
-              type: "tree",
-              dicUrl: "/api/blade-system/tenant/select",
-              props: {
-                label: "tenantName",
-                value: "tenantId"
-              },
-              hide: !website.tenantMode,
-              addDisplay: website.tenantMode,
-              editDisplay: website.tenantMode,
-              viewDisplay: website.tenantMode,
-              search: website.tenantMode,
-              rules: [{
-                required: true,
-                message: "请输入所属租户",
-                trigger: "click"
-              }]
             },
             {
               label: '密码',
@@ -144,18 +116,8 @@
               rules: [{required: true, validator: validatePass2, trigger: 'blur'}]
             },
             {
-              label: "用户昵称",
-              prop: "name",
-              search: true,
-              rules: [{
-                required: true,
-                message: "请输入用户昵称",
-                trigger: "blur"
-              }]
-            },
-            {
               label: "用户姓名",
-              prop: "realName",
+              prop: "fullname",
               rules: [{
                 required: true,
                 message: "请输入用户姓名",
@@ -168,35 +130,34 @@
             },
             {
               label: "所属角色",
-              prop: "roleId",
-              multiple: true,
-              type: "tree",
-              dicData: [],
-              props: {
-                label: "title"
-              },
-              slot: true,
-              rules: [{
-                required: true,
-                message: "请选择所属角色",
-                trigger: "click"
-              }]
+              prop: "roleNames",
+              type: "select",
+              dicData: [
+                {
+                  label: "默认角色",
+                  value: 2
+                },
+                {
+                  label: "未知",
+                  value: 3
+                }
+              ],
             },
             {
-              label: "所属部门",
-              prop: "deptId",
-              type: "tree",
-              multiple: true,
-              dicData: [],
-              props: {
-                label: "title"
-              },
-              slot: true,
-              rules: [{
-                required: true,
-                message: "请选择所属部门",
-                trigger: "click"
-              }]
+              label: "所属角色",
+              prop: "roleId",
+              type: "select",
+              dicData: [
+                {
+                  label: "默认角色",
+                  value: 2
+                },
+                {
+                  label: "未知",
+                  value: 3
+                }
+              ],
+              hide:true
             },
             {
               label: "手机号码",
@@ -282,8 +243,6 @@
     },
     methods: {
       rowSave(row, loading, done) {
-        row.deptId = row.deptId.join(",");
-        row.roleId = row.roleId.join(",");
         add(row).then(() => {
           loading();
           this.onLoad(this.page);
@@ -410,22 +369,20 @@
       },
       onLoad(page, params = {}) {
         this.loading = true;
-        debugger;
         getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
-          debugger;
-          const data = res.data.data;
-          this.page.total = data.total;
-          this.data = data.records;
-          this.loading = false;
-          this.selectionClear();
-        });
-        getDeptTree(this.form.tenantId).then(res => {
-          const index = this.$refs.crud.findColumnIndex("deptId");
-          this.option.column[index].dicData = res.data.data;
-        });
-        getRoleTree(this.form.tenantId).then(res => {
-          const index = this.$refs.crud.findColumnIndex("roleId");
-          this.option.column[index].dicData = res.data.data;
+          if (res.success === true) {
+            res.result.content.forEach(r => {
+              let roles = [];
+              r.roles.forEach(ro => {
+                roles.push(ro.roleAlias);
+              });
+              r.roleNames = roles.join("，");
+            });
+            this.page.total = res.result.totalElements;
+            this.data = res.result.content;
+            this.loading = false;
+            this.selectionClear();
+          }
         });
       }
     }

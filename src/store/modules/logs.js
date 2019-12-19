@@ -28,7 +28,7 @@ const logs = {
         message,
         stack,
         info: info.toString()
-      }))
+      }));
       setStore({name: 'logsList', content: state.logsList})
     },
     CLEAR_LOGS: (state) => {

@@ -29,12 +29,12 @@ NProgress.configure({
 });
 //HTTPrequest拦截
 axios.interceptors.request.use(config => {
-  NProgress.start() // start progress bar
+  NProgress.start(); // start progress bar
   const meta = (config.meta || {});
   const isToken = meta.isToken === false;
   config.headers['Authorization'] = `Basic ${Base64.encode(`${website.clientId}:${website.clientSecret}`)}`;
   if (getToken() && !isToken) {
-    config.headers['Blade-Auth'] = 'bearer ' + getToken() // 让每个请求携带token--['Authorization']为自定义key 请根据实际情况自行修改
+    config.headers['accessToken'] = getToken(); // 让每个请求携带token--['Authorization']为自定义key 请根据实际情况自行修改
   }
   //headers中配置serialize为true开启序列化
   if (config.method === 'post' && meta.isSerialize === true) {
@@ -49,23 +49,23 @@ axios.interceptors.response.use(res => {
   NProgress.done();
   const status = res.data.code || 200;
   const statusWhiteList = website.statusWhiteList || [];
-  const message = res.data.msg || '未知错误';
+  const message = res.data.message || '未知错误';
   //如果在白名单里则自行catch逻辑处理
   if (statusWhiteList.includes(status)) return Promise.reject(res);
-  //如果是401则跳转到登录页面
-  if (status === 401) store.dispatch('FedLogOut').then(() => router.push({path: '/login'}));
+  //如果是403则跳转到登录页面(登录失效)
+  if (status === 403) store.dispatch('FedLogOut').then(() => router.push({path: '/login'}));
   // 如果请求为非200否者默认统一处理
   if (status !== 200) {
     Message({
       message: message,
       type: 'error'
-    })
+    });
     return Promise.reject(new Error(message))
   }
-  return res;
+  return res.data;
 }, error => {
   NProgress.done();
   return Promise.reject(new Error(error));
-})
+});
 
 export default axios;

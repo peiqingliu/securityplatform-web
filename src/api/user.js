@@ -2,7 +2,7 @@ import request from '@/router/axios';
 import { baseUrl } from '@/config/env';
 
 export const loginByUsername = (tenantId, username, password, type) => request({
-  url: '/api/blade-auth/oauth/token',
+  url: '/cetc/login',
   method: 'post',
   headers: {
     'Tenant-Id': tenantId
@@ -32,15 +32,16 @@ export const refreshToken = (refresh_token, tenantId) => request({
 });
 
 export const getButtons = () => request({
-  url: '/api/blade-system/menu/buttons',
+  url: '/cetc/system/permission/buttons',
   method: 'get'
 });
 
 /**
- * 获取当前登录的用户信息
+ * 获取当前用户的信息
+ * @returns {AxiosPromise}
  */
 export const getUserInfo = () => request({
-  url: baseUrl + '/user/getUserInfo',
+  url: baseUrl + '/cetc/system/user/info',
   method: 'get'
 });
 

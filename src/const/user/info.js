@@ -68,5 +68,31 @@ export default {
         prop: 'newPassword1'
       }]
     }
+  },{
+    label: '业务委托',
+    prop: 'businessDelegation',
+    option: {
+      submitText: '修改',
+      column: [{
+        label: '原密码',
+        span: 12,
+        row: true,
+        type: 'password',
+        prop: 'oldPassword'
+      }, {
+        label: '新密码',
+        span: 12,
+        row: true,
+        type: 'password',
+        prop: 'newPassword'
+      }, {
+        label: '确认密码',
+        span: 12,
+        row: true,
+        type: 'password',
+        prop: 'newPassword1'
+      }]
+    }
   }]
 }
+

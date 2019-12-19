@@ -207,7 +207,6 @@
     },
     methods: {
       rowSave(row, loading, done) {
-        debugger;
         add(row).then(() => {
           loading();
           this.onLoad(this.page);

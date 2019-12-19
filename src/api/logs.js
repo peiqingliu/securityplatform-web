@@ -60,5 +60,24 @@ export const getErrorLogs = (id) => {
       id,
     }
   })
-}
+};
 
+
+export const findAllLogDataByUsername = (username) => {
+  return request({
+    url: '/cetc/log/findAllLogDataByUsername',
+    method: 'get',
+    params: {
+      username
+    }
+  })
+};
+export const getCountLoginNum = (params) =>{
+    return request({
+        url: '/cetc/log/getCountLoginNum',
+        method: 'get',
+        params: {
+            ...params
+        }
+    })
+};

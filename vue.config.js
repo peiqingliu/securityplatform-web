@@ -11,12 +11,12 @@ module.exports = {
             'element-ui': 'ELEMENT',
         });
         const entry = config.entry('app');
-/*        entry
+        entry
             .add('babel-polyfill')
             .end();
         entry
             .add('classlist-polyfill')
-            .end()*/
+            .end()
     },
     devServer: {
         host: '127.0.0.1',

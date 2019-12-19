@@ -19,7 +19,7 @@ export const setStore = (params = {}) => {
         content: content,
         type: type,
         datetime: new Date().getTime()
-    }
+    };
     if (type) window.sessionStorage.setItem(name, JSON.stringify(obj));
     else window.localStorage.setItem(name, JSON.stringify(obj));
 }
@@ -32,7 +32,7 @@ export const getStore = (params = {}) => {
         name,
         debug
     } = params;
-    name = keyName + name
+    name = keyName + name;
     let obj = {},
         content;
     obj = window.sessionStorage.getItem(name);

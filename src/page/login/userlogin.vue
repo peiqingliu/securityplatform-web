@@ -59,8 +59,8 @@ export default {
       tenantMode: website.tenantMode,
       loginForm: {
         tenantId: "000000",
-        username: "admin",
-        password: "admin",
+        username: "",
+        password: "",
         type: "account"
       },
       loginRules: {
@@ -97,6 +97,7 @@ export default {
             spinner: "el-icon-loading"
           });
           this.$store.dispatch("LoginByUsername", this.loginForm).then(() => {
+            console.log("path"+this.tagWel);
             this.$router.push({ path: this.tagWel.value });
             loading.close();
           }).catch(() => {

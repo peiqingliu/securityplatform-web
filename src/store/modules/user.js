@@ -16,7 +16,7 @@ function addPath(ele, first) {
     path: propsConfig.path || 'path',
     icon: propsConfig.icon || 'icon',
     children: propsConfig.children || 'children'
-  }
+  };
   const icon = ele[propsDefault.icon];
   ele[propsDefault.icon] = validatenull(icon) ? menu.iconDefault : icon;
   const isChild = ele[propsDefault.children] && ele[propsDefault.children].length !== 0;
@@ -47,20 +47,18 @@ const user = {
     LoginByUsername({commit}, userInfo) {
       return new Promise((resolve, reject) => {
         loginByUsername(userInfo.tenantId, userInfo.username, userInfo.password, userInfo.type).then(res => {
-          const data = res.data;
-          if (data.error_description) {
+          const data = res.result;
+          if (res.success === true){
+            commit('SET_TOKEN', data);
+            // commit('SET_TENANT_ID', data.tenant_id);
+            // commit('SET_USER_INFO', data);
+            // commit('DEL_ALL_TAG');
+            // commit('CLEAR_LOCK');
+          } else {
             Message({
-              message: data.error_description,
+              message: '内部错误，登录失败',
               type: 'error'
             })
-          } else {
-
-            commit('SET_TOKEN', data.access_token);
-            commit('SET_REFRESH_TOKEN', data.refresh_token);
-            commit('SET_TENANT_ID', data.tenant_id);
-            commit('SET_USER_INFO', data);
-            commit('DEL_ALL_TAG');
-            commit('CLEAR_LOCK');
           }
           resolve();
         }).catch(error => {
@@ -68,12 +66,27 @@ const user = {
         })
       })
     },
+    GetCurrentUserInfo({commit}, userInfo){
+      return new Promise((resolve,reject) => {
+        getUserInfo().then(res => {
+          if (res.success === true){
+            let data = res.result;
+             commit('SET_TENANT_ID', data.tenantId);
+             commit('SET_USER_INFO', data);
+             commit('DEL_ALL_TAG');
+             commit('CLEAR_LOCK');
+          }
+        })
+      })
+    },
     GetButtons({commit}) {
       return new Promise((resolve) => {
         getButtons().then(res => {
-          const data = res.data.data;
-          commit('SET_PERMISSION', data);
-          resolve();
+          if (res.success === true){
+            const data = res.result;
+            commit('SET_PERMISSION', data);
+            resolve();
+          }
         })
       })
     },
@@ -101,31 +114,30 @@ const user = {
       })
     },
     //刷新token
-    refreshToken({state, commit}) {
-      console.log('handle refresh token')
-      return new Promise((resolve, reject) => {
-        refreshToken(state.refreshToken, state.tenantId).then(res => {
-          const data = res.data;
-          commit('SET_TOKEN', data.access_token);
-          commit('SET_REFRESH_TOKEN', data.refresh_token);
-          resolve();
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
+    // refreshToken({state, commit}) {
+    //   console.log('handle refresh token')
+    //   return new Promise((resolve, reject) => {
+    //     refreshToken(state.refreshToken, state.tenantId).then(res => {
+    //       const data = res.data;
+    //       commit('SET_TOKEN', data.access_token);
+    //       commit('SET_REFRESH_TOKEN', data.refresh_token);
+    //       resolve();
+    //     }).catch(error => {
+    //       reject(error)
+    //     })
+    //   })
+    // },
     // 登出
     LogOut({commit}) {
       return new Promise((resolve, reject) => {
-        debugger;
         logout().then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_MENU', [])
-          commit('SET_ROLES', [])
+          commit('SET_TOKEN', '');
+          commit('SET_MENU', []);
+          commit('SET_ROLES', []);
           commit('DEL_ALL_TAG');
           commit('CLEAR_LOCK');
-          removeToken()
-          removeRefreshToken()
+          removeToken();
+          removeRefreshToken();
           resolve()
         }).catch(error => {
           reject(error)
@@ -140,8 +152,8 @@ const user = {
         commit('SET_ROLES', [])
         commit('DEL_ALL_TAG');
         commit('CLEAR_LOCK');
-        removeToken()
-        removeRefreshToken()
+        removeToken();
+        removeRefreshToken();
         resolve()
       })
     },
@@ -149,8 +161,10 @@ const user = {
     GetTopMenu() {
       return new Promise(resolve => {
         getTopMenu().then((res) => {
-          const data = res.data.data || []
-          resolve(data)
+          if (res.success === true){
+            const data = res.result || [];
+            resolve(data)
+          }
         })
       })
     },
@@ -158,29 +172,33 @@ const user = {
     GetMenu({commit, dispatch}, topMenuId) {
       return new Promise(resolve => {
         getRoutes(topMenuId).then((res) => {
-          const data = res.data.data
-          let menu = deepClone(data);
-          menu.forEach(ele => {
-            addPath(ele, true);
-          })
-          commit('SET_MENU', menu)
-          dispatch('GetButtons');
-          resolve(menu)
+          if (res.success === true){
+            const data = res.result;
+            if (data){
+              let menu = deepClone(data);
+              menu.forEach(ele => {
+                addPath(ele, true);
+              });
+              commit('SET_MENU', menu);
+              dispatch('GetButtons');
+              resolve(menu)
+            }
+          }
         })
       })
     },
   },
   mutations: {
     SET_TOKEN: (state, token) => {
-      setToken(token)
+      setToken(token);
       state.token = token;
       setStore({name: 'token', content: state.token, type: 'session'})
     },
-    SET_REFRESH_TOKEN: (state, refreshToken) => {
-      setRefreshToken(refreshToken)
-      state.refreshToken = refreshToken;
-      setStore({name: 'refreshToken', content: state.refreshToken, type: 'session'})
-    },
+    // SET_REFRESH_TOKEN: (state, refreshToken) => {
+    //   setRefreshToken(refreshToken)
+    //   state.refreshToken = refreshToken;
+    //   setStore({name: 'refreshToken', content: state.refreshToken, type: 'session'})
+    // },
     SET_TENANT_ID: (state, tenantId) => {
       state.tenantId = tenantId;
       setStore({name: 'tenantId', content: state.tenantId, type: 'session'})
@@ -190,7 +208,7 @@ const user = {
       setStore({name: 'userInfo', content: state.userInfo})
     },
     SET_MENU: (state, menu) => {
-      state.menu = menu
+      state.menu = menu;
       setStore({name: 'menu', content: state.menu, type: 'session'})
     },
     SET_MENU_ALL: (state, menuAll) => {
@@ -201,7 +219,6 @@ const user = {
     },
     SET_PERMISSION: (state, permission) => {
       let result = [];
-
       function getCode(list) {
         list.forEach(ele => {
           if (typeof (ele) === 'object') {
@@ -216,7 +233,6 @@ const user = {
 
         })
       }
-
       getCode(permission);
       state.permission = {};
       result.forEach(ele => {
@@ -226,5 +242,5 @@ const user = {
     }
   }
 
-}
+};
 export default user

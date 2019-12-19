@@ -77,7 +77,7 @@ export default {
           path: this.$router.$avueRouter.getPath({
             name: itemActive.label,
             src: itemActive.path,
-            i18n: itemActive.meta.i18n
+           // i18n: itemActive.meta.i18n
           })
         });
       });

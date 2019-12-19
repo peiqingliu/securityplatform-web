@@ -1,6 +1,6 @@
 export default {
   tip: '提示',
-  title: 'Saber企业级开发平台',
+  title: 'CETC-综合信息业务平台',
   logoutTip: '退出系统, 是否继续?',
   submitText: '确定',
   cancelText: '取消',
@@ -65,12 +65,10 @@ export default {
   },
   login: {
     title: '登录 ',
-    info: 'BladeX 企业级开发平台',
+    info: 'CETC-综合信息业务平台',
     tenantId: '请输入租户ID',
     username: '请输入账号',
     password: '请输入密码',
-    wechat: '微信',
-    qq: 'QQ',
     phone: '请输入手机号',
     code: '请输入验证码',
     submit: '登录',

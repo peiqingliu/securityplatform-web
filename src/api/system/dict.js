@@ -2,7 +2,7 @@ import request from '@/router/axios';
 
 export const getList = (current, size, params) => {
   return request({
-    url: '/api/blade-system/dict/list',
+    url: '/cetc/system/dict/list',
     method: 'get',
     params: {
       ...params,
@@ -10,54 +10,54 @@ export const getList = (current, size, params) => {
       size,
     }
   })
-}
+};
 export const remove = (ids) => {
   return request({
-    url: '/api/blade-system/dict/remove',
+    url: '/cetc/system/dict/remove',
     method: 'post',
     params: {
       ids,
     }
   })
-}
+};
 
 export const add = (row) => {
   return request({
-    url: '/api/blade-system/dict/submit',
+    url: '/cetc/system/dict/submit',
     method: 'post',
     data: row
   })
-}
+};
 
 export const update = (row) => {
   return request({
-    url: '/api/blade-system/dict/submit',
+    url: '/cetc/system/dict/submit',
     method: 'post',
     data: row
   })
-}
+};
 
 
 export const getDict = (id) => {
   return request({
-    url: '/api/blade-system/dict/detail',
+    url: '/cetc/system/dict/detail',
     method: 'get',
     params: {
       id,
     }
   })
-}
+};
 export const getDictTree = () => {
   return request({
     url: '/api/blade-system/dict/tree?code=DICT',
     method: 'get'
   })
-}
+};
 
 export const getDictionary = (params) => {
   return request({
-    url: '/api/blade-system/dict/dictionary',
+    url: '/cetc/system/dict/dictionary',
     method: 'get',
     params,
   })
-}
+};

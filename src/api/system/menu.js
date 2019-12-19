@@ -2,7 +2,7 @@ import request from '@/router/axios';
 
 export const getList = (current, size, params) => {
   return request({
-    url: '/api/blade-system/menu/list',
+    url: '/cetc/system/permission/getByCondition',
     method: 'get',
     params: {
       ...params,
@@ -10,11 +10,20 @@ export const getList = (current, size, params) => {
       size,
     }
   })
-}
+};
+
+export const getMenuTree = () => {
+  return request({
+    url: '/cetc/system/permission/tree',
+    method: 'get',
+    params: {}
+  })
+};
+
 
 export const getMenuList = (current, size, params) => {
   return request({
-    url: '/api/blade-system/menu/menu-list',
+    url: '/cetc/system/permission/menu-list',
     method: 'get',
     params: {
       ...params,
@@ -22,51 +31,56 @@ export const getMenuList = (current, size, params) => {
       size,
     }
   })
-}
+};
 
 export const remove = (ids) => {
   return request({
-    url: '/api/blade-system/menu/remove',
+    url: '/cetc/system/permission/remove',
     method: 'post',
     params: {
       ids,
     }
   })
-}
+};
 
 export const add = (row) => {
   return request({
-    url: '/api/blade-system/menu/submit',
+    url: '/cetc/system/permission/submit',
     method: 'post',
     data: row
   })
-}
+};
 
 export const update = (row) => {
   return request({
-    url: '/api/blade-system/menu/submit',
+    url: '/cetc/system/permission/edit',
     method: 'post',
     data: row
   })
-}
+};
 
 export const getMenu = (id) => {
   return request({
-    url: '/api/blade-system/menu/detail',
+    url: '/cetc/system/permission/detail',
     method: 'get',
     params: {
       id,
     }
   })
-}
+};
 
 export const getTopMenu = () => request({
-  url: '/api/blade-system/menu/top-menu',
+  url: '/cetc/system/permission/top-menu',
   method: 'get'
 });
 
+/**
+ * 获取路由
+ * @param topMenuId
+ * @returns {AxiosPromise}
+ */
 export const getRoutes = (topMenuId) => request({
-  url: '/api/blade-system/menu/routes',
+  url: '/cetc/system/permission/routes',
   method: 'get',
   params: {
     topMenuId,
