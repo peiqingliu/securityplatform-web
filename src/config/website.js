@@ -2,12 +2,12 @@
  * 全局配置文件
  */
 export default {
-  title: "OA办公",
+  title: "综合安防",
   logo: "S",
-  key: 'Cetc',//配置主键,目前用于存储
-  indexTitle: '信息平台',
-  clientId: 'saber', // 客户端id
-  clientSecret: 'saber_secret', // 客户端密钥
+  key: 'Security',//配置主键,目前用于存储
+  indexTitle: '综合安防平台',
+  clientId: 'Security', // 客户端id
+  clientSecret: 'Security_secret', // 客户端密钥
   tenantMode: true, // 是否开启租户模式
   lockPage: '/lock',
   tokenTime: 300000,
@@ -36,6 +36,4 @@ export default {
       children: 'children'
     }
   },
-  // 流程设计器地址
-  flowDesignUrl: 'http://localhost:9999',
 }

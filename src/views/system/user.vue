@@ -46,10 +46,7 @@
     add,
     resetPassword
   } from "@/api/system/user";
-  import {getDeptTree} from "@/api/system/dept";
-  import {getRoleTree} from "@/api/system/role";
   import {mapGetters} from "vuex";
-  import website from '@/config/website';
 
   export default {
     data() {
@@ -98,6 +95,25 @@
               label: "登录账号",
               prop: "username",
               search: true,
+              rules: [{
+                required: true,
+                message: "请输入用户姓名",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "用户姓名",
+              prop: "fullname",
+              search: true,
+              rules: [{
+                required: true,
+                message: "请输入用户姓名",
+                trigger: "blur"
+              }, {
+                min: 2,
+                max: 5,
+                message: '姓名长度在2到5个字符'
+              }]
             },
             {
               label: '密码',
@@ -115,53 +131,28 @@
               viewDisplay: false,
               rules: [{required: true, validator: validatePass2, trigger: 'blur'}]
             },
-            {
-              label: "用户姓名",
-              prop: "fullname",
-              rules: [{
-                required: true,
-                message: "请输入用户姓名",
-                trigger: "blur"
-              }, {
-                min: 2,
-                max: 5,
-                message: '姓名长度在2到5个字符'
-              }]
-            },
+
             {
               label: "所属角色",
               prop: "roleNames",
               type: "select",
-              dicData: [
-                {
-                  label: "默认角色",
-                  value: 2
-                },
-                {
-                  label: "未知",
-                  value: 3
-                }
-              ],
+              display:false
             },
             {
-              label: "所属角色",
-              prop: "roleId",
+              label: "角色",
+              prop: "defaultRole",
               type: "select",
               dicData: [
                 {
                   label: "默认角色",
                   value: 2
-                },
-                {
-                  label: "未知",
-                  value: 3
                 }
               ],
               hide:true
             },
             {
               label: "手机号码",
-              prop: "phone",
+              prop: "mobile",
               overHidden: true
             },
             {
@@ -210,18 +201,6 @@
       };
     },
     watch: {
-      'form.tenantId'() {
-        if (this.form.tenantId !== '') {
-          getDeptTree(this.form.tenantId).then(res => {
-            const index = this.$refs.crud.findColumnIndex("deptId");
-            this.option.column[index].dicData = res.data.data;
-          });
-          getRoleTree(this.form.tenantId).then(res => {
-            const index = this.$refs.crud.findColumnIndex("roleId");
-            this.option.column[index].dicData = res.data.data;
-          });
-        }
-      }
     },
     computed: {
       ...mapGetters(["permission"]),
@@ -243,6 +222,7 @@
     },
     methods: {
       rowSave(row, loading, done) {
+        debugger;
         add(row).then(() => {
           loading();
           this.onLoad(this.page);
@@ -256,8 +236,6 @@
         });
       },
       rowUpdate(row, index, loading, done) {
-        row.deptId = row.deptId.join(",");
-        row.roleId = row.roleId.join(",");
         update(row).then(() => {
           loading();
           this.onLoad(this.page);
@@ -277,6 +255,7 @@
           type: "warning"
         })
           .then(() => {
+            debugger;
             return remove(row.id);
           })
           .then(() => {

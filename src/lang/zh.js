@@ -1,6 +1,6 @@
 export default {
   tip: '提示',
-  title: 'CETC-综合信息业务平台',
+  title: '综合安防业务平台',
   logoutTip: '退出系统, 是否继续?',
   submitText: '确定',
   cancelText: '取消',

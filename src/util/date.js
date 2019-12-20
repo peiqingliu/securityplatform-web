@@ -20,7 +20,7 @@ export const calcDate = (date1, date2) => {
     minutes: minutes,
     seconds: seconds,
   }
-}
+};
 
 /**
  * 日期格式化
