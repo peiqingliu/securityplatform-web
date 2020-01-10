@@ -25,7 +25,7 @@ export const remove = (ids) => {
 
 export const add = (row) => {
     return request({
-        url: '/cetc/monitor/camera/add',
+        url: '/cetc/monitor/camera/save',
         method: 'post',
         data: row
     })

@@ -158,7 +158,7 @@ const user = {
       })
     },
     //获取顶部菜单
-    GetTopMenu() {
+/*    GetTopMenu() {
       return new Promise(resolve => {
         getTopMenu().then((res) => {
           if (res.success === true){
@@ -167,7 +167,7 @@ const user = {
           }
         })
       })
-    },
+    },*/
     //获取系统菜单
     GetMenu({commit, dispatch}, topMenuId) {
       return new Promise(resolve => {

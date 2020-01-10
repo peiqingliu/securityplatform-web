@@ -40,17 +40,16 @@ export default {
     };
   },
   created() {
-    this.getMenu();
   },
   computed: {
     ...mapGetters(["tagCurrent", "menu"])
   },
   methods: {
-    getMenu() {
+  /*  getMenu() {
       this.$store.dispatch("GetTopMenu").then(res => {
         this.items = res;
       });
-    },
+    },*/
     generateTitle(item) {
       return this.$router.$avueRouter.generateTitle(
         item.name,

@@ -26,6 +26,13 @@
                            @click="handleDelete">删 除
                 </el-button>
             </template>
+            <template slot-scope="scope" slot="menu">
+                <el-button icon="el-icon-video-camera" size="small" @click="handleView">连接</el-button>
+            </template>
+            <template slot="status" slot-scope="scope" >
+                <el-tag v-if="scope.row.status === 0">正常</el-tag>
+                <el-tag  type="warning" v-else-if="scope.row.status === -1">禁用</el-tag>
+            </template>
         </avue-crud>
     </basic-container>
 </template>
@@ -50,17 +57,19 @@
                     currentPage: 1,
                     total: 0
                 },
+                query: {},
                 option:{
                     title:'',
                     align:'center',
                     menuAlign:'center',
-                    height: 450,
+                    menuWidth:300,
                     calcHeight: 350,
                     tip: false,
                     border: true,
                     index: true,
                     selection: true,
-                    viewBtn: true,
+                    delBtn:false,
+                    viewBtn: false,
                     dialogHeight: 350,
                     dialogType: 'dialog',
                     column:[
@@ -68,7 +77,6 @@
                             label: "名称",
                             prop: "cameraName",
                             search: true,
-                            searchSpan:4,
                             rules: [{
                                 required: true,
                                 message: "请输入名称",
@@ -76,21 +84,33 @@
                             }]
                         },
                         {
+                            label: "IP",
+                            prop: "ip",
+                            width:150,
+                            search: true,
+                            labelSpan:1
+                        },
+                   /*     {
                             label: "编码",
                             prop: "cameraCode",
-                            search: true,
-                            searchSpan:4,
                             rules: [{
                                 required: true,
                                 message: "请输入编码",
                                 trigger: "blur"
                             }]
-                        },
+                        },*/
                         {
                             label: "型号",
                             prop: "cameraModel",
-                            searchSpan:4,
-                            search: true,
+                            rules: [{
+                                required: true,
+                                message: "请输入型号",
+                                trigger: "blur"
+                            }]
+                        },
+                        {
+                            label: "登录名",
+                            prop: "loginName",
                             rules: [{
                                 required: true,
                                 message: "请输入型号",
@@ -101,7 +121,7 @@
                             label: '密码',
                             prop: 'password',
                             hide: true,
-                            editDisplay: false,
+                            editDisplay: true,
                             viewDisplay: false
                         },
                         {
@@ -117,22 +137,21 @@
                             ]
                         },
                         {
-                            label: "图片",
-                            prop: "picture",
-                            type:"upload",
-                            accept:"String"
-                        },
-                        {
-                            label: "IP",
-                            prop: "ip",
-                            search: true,
-                            searchSpan:4,
-                            labelSpan:1
-                        },
-                        {
                             label: "账号状态",
-                            prop: "status"
-                        }
+                            prop: "status",
+                            slot:true,
+                            addDisplay:false
+                        },
+                        {
+                            label: "创建时间",
+                            type: "date",
+                            width:150,
+                            prop: "createTime",
+                            format: "yyyy-MM-dd hh:mm:ss",
+                            valueFormat: "yyyy-MM-dd hh:mm:ss",
+                            addDisplay:false,
+                            editDisplay: false
+                        },
                     ]
                 },
                 data:[]
@@ -143,11 +162,12 @@
         computed: {
             ...mapGetters(["permission"]),
             permissionList() {
+                debugger;
                 return {
-                    addBtn: this.vaildData(this.permission.user_add, false),
-                    viewBtn: this.vaildData(this.permission.user_view, false),
-                    delBtn: this.vaildData(this.permission.user_delete, false),
-                    editBtn: this.vaildData(this.permission.user_edit, false)
+                    addBtn: this.vaildData(this.permission.camera_add, false),
+                    viewBtn: this.vaildData(this.permission.camera_view, false),
+                    delBtn: this.vaildData(this.permission.camera_delete, false),
+                    editBtn: this.vaildData(this.permission.camera_edit, false)
                 };
             },
             ids() {
@@ -192,7 +212,6 @@
                     type: "warning"
                 })
                     .then(() => {
-                        debugger;
                         return remove(row.id);
                     })
                     .then(() => {
@@ -217,6 +236,9 @@
             selectionClear() {
                 this.selectionList = [];
                 this.$refs.crud.toggleSelection();
+            },
+            handleView(){
+
             },
             handleDelete() {
                 if (this.selectionList.length === 0) {
@@ -257,15 +279,7 @@
             onLoad(page, params = {}) {
                 this.loading = false;
                 getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
-                    debugger;
                     if (res.success === true) {
-                        res.result.content.forEach(r => {
-                            let roles = [];
-                            r.roles.forEach(ro => {
-                                roles.push(ro.roleAlias);
-                            });
-                            r.roleNames = roles.join("，");
-                        });
                         this.page.total = res.result.totalElements;
                         this.data = res.result.content;
                         this.loading = false;
