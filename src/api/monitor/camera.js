@@ -2,7 +2,7 @@ import request from '@/router/axios';
 
 export const getList = (currentPage, pageSize, params) => {
     return request({
-        url: '/cetc/monitor/camera/getByCondition',
+        url: '/us/monitor/camera/getByCondition',
         method: 'get',
         params: {
             ...params,
@@ -15,7 +15,7 @@ export const getList = (currentPage, pageSize, params) => {
 
 export const remove = (ids) => {
     return request({
-        url: '/cetc/monitor/camera/remove',
+        url: '/us/monitor/camera/remove',
         method: 'post',
         params: {
             ids,
@@ -25,7 +25,7 @@ export const remove = (ids) => {
 
 export const add = (row) => {
     return request({
-        url: '/cetc/monitor/camera/save',
+        url: '/us/monitor/camera/save',
         method: 'post',
         data: row
     })
@@ -33,7 +33,7 @@ export const add = (row) => {
 
 export const update = (row) => {
     return request({
-        url: '/cetc/monitor/camera/update',
+        url: '/us/monitor/camera/update',
         method: 'post',
         data: row
     })
@@ -41,7 +41,7 @@ export const update = (row) => {
 
 export const getCamera = (id) => {
     return request({
-        url: '/cetc/monitor/camera/detail',
+        url: '/us/monitor/camera/detail',
         method: 'get',
         params: {
             id,

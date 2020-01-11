@@ -2,7 +2,7 @@ import request from '@/router/axios';
 
 export const getList = (current, size, params) => {
   return request({
-    url: '/cetc/system/permission/getByCondition',
+    url: '/us/system/permission/getByCondition',
     method: 'get',
     params: {
       ...params,
@@ -14,7 +14,7 @@ export const getList = (current, size, params) => {
 
 export const getMenuTree = () => {
   return request({
-    url: '/cetc/system/permission/tree',
+    url: '/us/system/permission/tree',
     method: 'get',
     params: {}
   })
@@ -23,7 +23,7 @@ export const getMenuTree = () => {
 
 export const getMenuList = (current, size, params) => {
   return request({
-    url: '/cetc/system/permission/menu-list',
+    url: '/us/system/permission/menu-list',
     method: 'get',
     params: {
       ...params,
@@ -35,7 +35,7 @@ export const getMenuList = (current, size, params) => {
 
 export const remove = (ids) => {
   return request({
-    url: '/cetc/system/permission/remove',
+    url: '/us/system/permission/remove',
     method: 'post',
     params: {
       ids,
@@ -45,7 +45,7 @@ export const remove = (ids) => {
 
 export const add = (row) => {
   return request({
-    url: '/cetc/system/permission/submit',
+    url: '/us/system/permission/submit',
     method: 'post',
     data: row
   })
@@ -53,7 +53,7 @@ export const add = (row) => {
 
 export const update = (row) => {
   return request({
-    url: '/cetc/system/permission/edit',
+    url: '/us/system/permission/edit',
     method: 'post',
     data: row
   })
@@ -61,7 +61,7 @@ export const update = (row) => {
 
 export const getMenu = (id) => {
   return request({
-    url: '/cetc/system/permission/detail',
+    url: '/us/system/permission/detail',
     method: 'get',
     params: {
       id,
@@ -70,7 +70,7 @@ export const getMenu = (id) => {
 };
 
 export const getTopMenu = () => request({
-  url: '/cetc/system/permission/top-menu',
+  url: '/us/system/permission/top-menu',
   method: 'get'
 });
 
@@ -80,7 +80,7 @@ export const getTopMenu = () => request({
  * @returns {AxiosPromise}
  */
 export const getRoutes = (topMenuId) => request({
-  url: '/cetc/system/permission/routes',
+  url: '/us/system/permission/routes',
   method: 'get',
   params: {
     topMenuId,

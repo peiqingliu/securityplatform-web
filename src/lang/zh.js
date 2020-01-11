@@ -7,7 +7,7 @@ export default {
   search: '请输入搜索内容',
   menuTip: '没有发现菜单',
   wel: {
-    info: '早安，Smallwei，Avuex一款超乎你想象的框架！',
+    info: '您好，欢迎使用综合安防平台！',
     dept: '我是avue团队下的一个部门-哈皮部门-哈皮职位',
     team: '团队内排名',
     project: '项目访问',
@@ -65,7 +65,7 @@ export default {
   },
   login: {
     title: '登录 ',
-    info: '综合安防平台',
+    info: '优速-综合信息业务平台',
     tenantId: '请输入租户ID',
     username: '请输入账号',
     password: '请输入密码',

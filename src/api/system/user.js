@@ -2,7 +2,7 @@ import request from '@/router/axios';
 
 export const getList = (currentPage, pageSize, params) => {
   return request({
-    url: '/cetc/system/user/getByCondition',
+    url: '/us/system/user/getByCondition',
     method: 'get',
     params: {
       ...params,
@@ -15,7 +15,7 @@ export const getList = (currentPage, pageSize, params) => {
 
 export const remove = (ids) => {
   return request({
-    url: '/cetc/system/user/remove',
+    url: '/us/system/user/remove',
     method: 'post',
     params: {
       ids,
@@ -25,7 +25,7 @@ export const remove = (ids) => {
 
 export const add = (row) => {
   return request({
-    url: '/cetc/system/user/admin/add',
+    url: '/us/system/user/admin/add',
     method: 'post',
     data: row
   })
@@ -33,7 +33,7 @@ export const add = (row) => {
 
 export const update = (row) => {
   return request({
-    url: '/cetc/system/user/update',
+    url: '/us/system/user/update',
     method: 'post',
     data: row
   })
@@ -41,7 +41,7 @@ export const update = (row) => {
 
 export const getUser = (id) => {
   return request({
-    url: '/cetc/system/user/detail',
+    url: '/us/system/user/detail',
     method: 'get',
     params: {
       id,
@@ -52,7 +52,7 @@ export const getUser = (id) => {
 
 export const resetPassword = (userIds) => {
   return request({
-    url: '/cetc/system/user/reset-password',
+    url: '/us/system/user/reset-password',
     method: 'post',
     params: {
       userIds,

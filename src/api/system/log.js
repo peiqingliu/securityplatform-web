@@ -4,7 +4,7 @@ import request from '@/router/axios';
 
 export const getList = (currentPage, pageSize, params) => {
     return request({
-        url: '/cetc/log/getAllByPage',
+        url: '/us/log/getAllByPage',
         method: 'get',
         params: {
             ...params,

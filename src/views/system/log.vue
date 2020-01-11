@@ -149,7 +149,6 @@
             onLoad(page, params = {}) {
                 this.loading = false;
                 getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
-                    debugger;
                     if (res.success === true){
 
                         const data = res.result;

@@ -4,7 +4,7 @@
       <span v-if="keyCollapse"
             class="avue-logo_subtitle"
             key="0">
-        <img src="img/bg/oa-small.png"
+        <img src="img/bg/camera-small.svg"
              width="30" />
       </span>
     </transition>
@@ -13,7 +13,7 @@
         <span class="avue-logo_title"
               key="1">
           <div>
-            <img src="img/bg/oa-big.png"
+            <img src="img/bg/camera-big.svg"
                  width="30"
                  alt="">{{website.indexTitle}}</div>
         </span>

@@ -222,7 +222,6 @@
     },
     methods: {
       rowSave(row, loading, done) {
-        debugger;
         add(row).then(() => {
           loading();
           this.onLoad(this.page);
@@ -255,7 +254,6 @@
           type: "warning"
         })
           .then(() => {
-            debugger;
             return remove(row.id);
           })
           .then(() => {

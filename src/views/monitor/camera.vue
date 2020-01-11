@@ -162,7 +162,6 @@
         computed: {
             ...mapGetters(["permission"]),
             permissionList() {
-                debugger;
                 return {
                     addBtn: this.vaildData(this.permission.camera_add, false),
                     viewBtn: this.vaildData(this.permission.camera_view, false),

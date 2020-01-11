@@ -2,7 +2,7 @@ import request from '@/router/axios';
 import { baseUrl } from '@/config/env';
 
 export const loginByUsername = (tenantId, username, password, type) => request({
-  url: '/cetc/login',
+  url: '/us/login',
   method: 'post',
   headers: {
     'Tenant-Id': tenantId
@@ -32,7 +32,7 @@ export const refreshToken = (refresh_token, tenantId) => request({
 });
 
 export const getButtons = () => request({
-  url: '/cetc/system/permission/buttons',
+  url: '/us/system/permission/buttons',
   method: 'get'
 });
 
@@ -41,7 +41,7 @@ export const getButtons = () => request({
  * @returns {AxiosPromise}
  */
 export const getUserInfo = () => request({
-  url: baseUrl + '/cetc/system/user/info',
+  url: baseUrl + '/us/system/user/info',
   method: 'get'
 });
 
