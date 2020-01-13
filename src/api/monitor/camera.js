@@ -12,6 +12,17 @@ export const getList = (currentPage, pageSize, params) => {
     })
 };
 
+/**
+ * 开启自动注册服务
+ */
+export const startAutoRegisterService = () => {
+    return request({
+        url: '/us/monitor/camera/startAutoRegisterService',
+        method: 'get',
+        params: {}
+    })
+};
+
 
 export const remove = (ids) => {
     return request({

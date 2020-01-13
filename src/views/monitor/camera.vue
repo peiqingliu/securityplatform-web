@@ -26,8 +26,20 @@
                            @click="handleDelete">删 除
                 </el-button>
             </template>
+            <template slot="menuLeft">
+                <el-button type="info"
+                           size="small"
+                           icon="el-icon-delete"
+                           plain
+                           v-if="permission.camera_autoRegister"
+                           @click="cameraAutoRegister">开启服务
+                </el-button>
+            </template>
             <template slot-scope="scope" slot="menu">
                 <el-button icon="el-icon-video-camera" size="small" @click="handleView">连接</el-button>
+            </template>
+            <template slot-scope="scope" slot="menu">
+                <el-button icon="el-icon-video-camera" size="small" @click="remoteCapture">截图</el-button>
             </template>
             <template slot="status" slot-scope="scope" >
                 <el-tag v-if="scope.row.status === 0">正常</el-tag>
@@ -40,6 +52,7 @@
 <script>
     import {
         getList,
+        startAutoRegisterService,
         remove,
         update,
         add,
@@ -73,6 +86,16 @@
                     dialogHeight: 350,
                     dialogType: 'dialog',
                     column:[
+                        {
+                            label: "设备ID",
+                            prop: "cameraId",
+                            search: true,
+                            rules: [{
+                                required: true,
+                                message: "请输入设备Id",
+                                trigger: "blur"
+                            }]
+                        },
                         {
                             label: "名称",
                             prop: "cameraName",
@@ -239,6 +262,9 @@
             handleView(){
 
             },
+            remoteCapture(){
+
+            },
             handleDelete() {
                 if (this.selectionList.length === 0) {
                     this.$message.warning("请选择至少一条数据");
@@ -260,6 +286,18 @@
                         });
                         this.$refs.crud.toggleSelection();
                     });
+            },
+            cameraAutoRegister(){
+                startAutoRegisterService().then(res => {
+                    if (res.success === true){
+                        this.$message({
+                            type: "success",
+                            message: "服务开启成功!"
+                        });
+                    }else {
+                        this.$message.error('服务开启失败，请查看日志信息或者联系管理员!');
+                    }
+                })
             },
             beforeOpen(done, type) {
                 if (["edit", "view"].includes(type)) {
