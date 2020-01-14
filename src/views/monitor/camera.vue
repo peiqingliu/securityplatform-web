@@ -29,10 +29,19 @@
             <template slot="menuLeft">
                 <el-button type="info"
                            size="small"
-                           icon="el-icon-delete"
+                           icon="el-icon-switch-button"
                            plain
                            v-if="permission.camera_autoRegister"
                            @click="cameraAutoRegister">开启服务
+                </el-button>
+            </template>
+            <template slot="menuLeft">
+                <el-button type="warning"
+                           size="small"
+                           icon="el-icon-circle-close"
+                           plain
+                           v-if="permission.camera_stopServer"
+                           @click="cameraStopServer">关闭服务
                 </el-button>
             </template>
             <template slot-scope="scope" slot="menu">
@@ -41,9 +50,9 @@
             <template slot-scope="scope" slot="menu">
                 <el-button icon="el-icon-video-camera" size="small" @click="remoteCapture">截图</el-button>
             </template>
-            <template slot="status" slot-scope="scope" >
-                <el-tag v-if="scope.row.status === 0">正常</el-tag>
-                <el-tag  type="warning" v-else-if="scope.row.status === -1">禁用</el-tag>
+            <template slot="loginHandle" slot-scope="scope" >
+                <el-tag v-if="scope.row.loginHandle === 0">未连接</el-tag>
+                <el-tag  v-else >已连接</el-tag>
             </template>
         </avue-crud>
     </basic-container>
@@ -53,6 +62,7 @@
     import {
         getList,
         startAutoRegisterService,
+        stopService,
         remove,
         update,
         add,
@@ -88,7 +98,7 @@
                     column:[
                         {
                             label: "设备ID",
-                            prop: "cameraId",
+                            prop: "devcieId",
                             search: true,
                             rules: [{
                                 required: true,
@@ -110,26 +120,11 @@
                             label: "IP",
                             prop: "ip",
                             width:150,
-                            search: true,
                             labelSpan:1
                         },
-                   /*     {
-                            label: "编码",
-                            prop: "cameraCode",
-                            rules: [{
-                                required: true,
-                                message: "请输入编码",
-                                trigger: "blur"
-                            }]
-                        },*/
                         {
                             label: "型号",
                             prop: "cameraModel",
-                            rules: [{
-                                required: true,
-                                message: "请输入型号",
-                                trigger: "blur"
-                            }]
                         },
                         {
                             label: "登录名",
@@ -145,7 +140,12 @@
                             prop: 'password',
                             hide: true,
                             editDisplay: true,
-                            viewDisplay: false
+                            viewDisplay: false,
+                            rules: [{
+                                required: true,
+                                message: "请输入密码",
+                                trigger: "blur"
+                            }]
                         },
                         {
                             label: '位置',
@@ -153,15 +153,10 @@
                             hide: true,
                             editDisplay: false,
                             viewDisplay: false,
-                            rules: [
-                                {required: true,
-                                    message: "请输入型号",
-                                    trigger: 'blur'}
-                            ]
                         },
                         {
                             label: "账号状态",
-                            prop: "status",
+                            prop: "loginHandle",
                             slot:true,
                             addDisplay:false
                         },
@@ -289,6 +284,18 @@
             },
             cameraAutoRegister(){
                 startAutoRegisterService().then(res => {
+                    if (res.success === true){
+                        this.$message({
+                            type: "success",
+                            message: "服务开启成功!"
+                        });
+                    }else {
+                        this.$message.error('服务开启失败，请查看日志信息或者联系管理员!');
+                    }
+                })
+            },
+            cameraStopServer(){
+                stopService().then(res => {
                     if (res.success === true){
                         this.$message({
                             type: "success",

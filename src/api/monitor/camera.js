@@ -23,6 +23,16 @@ export const startAutoRegisterService = () => {
     })
 };
 
+/**
+ * 关闭服务
+ */
+export const stopService = () => {
+    return request({
+        url: '/us/monitor/camera/stopService',
+        method: 'get',
+        params: {}
+    })
+};
 
 export const remove = (ids) => {
     return request({
@@ -36,7 +46,7 @@ export const remove = (ids) => {
 
 export const add = (row) => {
     return request({
-        url: '/us/monitor/camera/save',
+        url: '/us/monitor/camera/add',
         method: 'post',
         data: row
     })

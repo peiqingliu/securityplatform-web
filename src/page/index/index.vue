@@ -83,29 +83,7 @@ export default {
           this.$store.commit("SET_SCREEN", admin.getScreen());
         }, 0);
       };
-      this.$store.dispatch("FlowRoutes").then(() => {});
     },
-    // refreshToken() {
-    //   this.refreshTime = setInterval(() => {
-    //     const token = getStore({
-    //       name: "token",
-    //       debug: true
-    //     });
-    //     const date = calcDate(token.datetime, new Date().getTime());
-    //     if (validatenull(date)) return;
-    //     if (date.seconds >= this.website.tokenTime && !this.refreshLock) {
-    //       this.refreshLock = true;
-    //       this.$store
-    //         .dispatch("refreshToken")
-    //         .then(() => {
-    //           this.refreshLock = false;
-    //         })
-    //         .catch(() => {
-    //           this.refreshLock = false;
-    //         });
-    //     }
-    //   }, 10000);
-    // }
   }
 };
 </script>
