@@ -36,4 +36,5 @@ export default {
       children: 'children'
     }
   },
+  qrcodeIP:"http://129.211.24.126:8088"
 }

@@ -31,6 +31,7 @@
                            size="small"
                            icon="el-icon-switch-button"
                            plain
+                           :disabled="disabled"
                            v-if="permission.camera_autoRegister"
                            @click="cameraAutoRegister">开启服务
                 </el-button>
@@ -44,15 +45,30 @@
                            @click="cameraStopServer">关闭服务
                 </el-button>
             </template>
-            <template slot-scope="scope" slot="menu">
-                <el-button icon="el-icon-video-camera" size="small" @click="handleView">连接</el-button>
+            <template slot="menuLeft">
+                <el-button type="warning"
+                           size="small"
+                           icon="el-icon-circle-close"
+                           plain
+                           v-if="isShowLogoutBtn"
+                           @click="cameraLogOut">设备登出
+                </el-button>
             </template>
             <template slot-scope="scope" slot="menu">
-                <el-button icon="el-icon-video-camera" size="small" @click="remoteCapture">截图</el-button>
+                <el-popover
+                        placement="bottom"
+                        title="扫码截图"
+                        width="100"
+                        trigger="click"
+                        >
+                    <canvas class="canvas" :ref ="scope.row.id"></canvas>
+                    <el-button slot="reference" icon="el-icon-full-screen" size="small" @click="useQrcode(scope.row)">二维码</el-button>
+                </el-popover>
+                <el-button icon="el-icon-video-camera" size="small" @click="remoteCapture(scope.row)">截图</el-button>
             </template>
             <template slot="loginHandle" slot-scope="scope" >
-                <el-tag v-if="scope.row.loginHandle === 0">未连接</el-tag>
-                <el-tag  v-else >已连接</el-tag>
+                <el-tag type="danger" v-if="scope.row.loginHandle === 0">未连接</el-tag>
+                <el-tag    v-else >已连接</el-tag>
             </template>
         </avue-crud>
     </basic-container>
@@ -61,20 +77,26 @@
 <script>
     import {
         getList,
+        checkServiceOpened,
         startAutoRegisterService,
         stopService,
         remove,
         update,
         add,
-        getCamera
+        logout,
+        getCamera,
+        remoteCapture
     } from "@/api/monitor/camera";
     import {mapGetters} from "vuex";
+    import QRCode from 'qrcode';
     export default {
         name: "camera",
         data(){
             return {
                 form: {},
+                disabled:false,
                 loading:true,
+                isShowLogoutBtn:false,
                 page: {
                     pageSize: 10,
                     currentPage: 1,
@@ -118,27 +140,29 @@
                         },
                         {
                             label: "IP",
-                            prop: "ip",
+                            prop: "deviceIp",
                             width:150,
-                            labelSpan:1
+                            addDisplay:false,
                         },
                         {
-                            label: "型号",
-                            prop: "cameraModel",
+                            label: "端口",
+                            prop: "devicePort",
+                            width:100,
+                            addDisplay:false,
                         },
                         {
                             label: "登录名",
                             prop: "loginName",
                             rules: [{
                                 required: true,
-                                message: "请输入型号",
+                                message: "请输入登录名",
                                 trigger: "blur"
                             }]
                         },
                         {
                             label: '密码',
                             prop: 'password',
-                            hide: true,
+                            //hide: true,
                             editDisplay: true,
                             viewDisplay: false,
                             rules: [{
@@ -148,6 +172,10 @@
                             }]
                         },
                         {
+                            label: "型号",
+                            prop: "cameraModel",
+                        },
+                        {
                             label: '位置',
                             prop: 'position',
                             hide: true,
@@ -155,10 +183,19 @@
                             viewDisplay: false,
                         },
                         {
-                            label: "账号状态",
+                            label: "登录状态",
                             prop: "loginHandle",
                             slot:true,
                             addDisplay:false
+                        },
+                        {
+                            label: "组别",
+                            prop: "groupId",
+                            rules: [{
+                                required: true,
+                                message: "请输入所属组",
+                                trigger: "blur"
+                            }]
                         },
                         {
                             label: "创建时间",
@@ -254,11 +291,16 @@
                 this.selectionList = [];
                 this.$refs.crud.toggleSelection();
             },
-            handleView(){
-
-            },
-            remoteCapture(){
-
+            remoteCapture(row){
+                if (row.loginHandle === 0){
+                    this.$message.warning("设备未连接,请先保持设备连接");
+                    return;
+                }
+                remoteCapture(row).then(res => {
+                    if (res.success === true){
+                        this.$message.success("截图成功");
+                    }
+                })
             },
             handleDelete() {
                 if (this.selectionList.length === 0) {
@@ -289,6 +331,7 @@
                             type: "success",
                             message: "服务开启成功!"
                         });
+                        this.disabled = true;
                     }else {
                         this.$message.error('服务开启失败，请查看日志信息或者联系管理员!');
                     }
@@ -299,12 +342,35 @@
                     if (res.success === true){
                         this.$message({
                             type: "success",
-                            message: "服务开启成功!"
+                            message: "服务关闭成功!"
                         });
+                        this.disabled = false;
                     }else {
-                        this.$message.error('服务开启失败，请查看日志信息或者联系管理员!');
+                        this.$message.error('服务关闭失败，请查看日志信息或者联系管理员!');
                     }
                 })
+            },
+            cameraLogOut(){
+                if (this.selectionList.length === 0 ||  this.selectionList.length > 1) {
+                    this.$message.warning("请选择一条数据");
+                    return;
+                }
+                this.$confirm("确定将选择数据登出?", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        return logout(this.ids);
+                    })
+                    .then(() => {
+                        this.onLoad(this.page);
+                        this.$message({
+                            type: "success",
+                            message: "操作成功!"
+                        });
+                        this.$refs.crud.toggleSelection();
+                    });
             },
             beforeOpen(done, type) {
                 if (["edit", "view"].includes(type)) {
@@ -320,6 +386,28 @@
             sizeChange(pageSize) {
                 this.page.pageSize = pageSize;
             },
+            checkService(){
+                checkServiceOpened().then(res => {
+                    if (res.success === true){
+                        const data  = res.result;
+                        if (data === "closed"){
+                            this.disabled = false;
+                        }else {
+                            this.disabled = true
+                        }
+                    }
+                })
+            },
+            useQrcode(row){
+                debugger;
+                let id = row.id;
+                let canvas = this.$refs[id];
+                let _data = `http://121.201.2.178:8088/us/api/qrCodeRemoteCapture?id=${id}`;
+                QRCode.toCanvas(canvas, _data, function (error) {
+                    if (error) console.error(error);
+                    console.log('success!');
+                })
+            },
             onLoad(page, params = {}) {
                 this.loading = false;
                 getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
@@ -331,10 +419,13 @@
                     }
                 });
             }
+        },
+        mounted() {
+            this.checkService();
         }
     }
 </script>
 
 <style scoped>
-
+    .canvas{width:100px!important;height:100px!important;}
 </style>
